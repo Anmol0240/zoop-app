@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #f1f5f9;
+}
+
+.font-display { font-family: 'Bebas Neue', sans-serif; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-slideIn { animation: slideIn 0.3s ease forwards; }
+
+@keyframes ping-once {
+  0% { transform: scale(1); opacity: 1; }
+  75% { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.new-order-ping { animation: ping-once 1s ease-out; }

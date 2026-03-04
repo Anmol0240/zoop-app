@@ -1,0 +1,12 @@
+{
+  "name": "zoop",
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "cd server && npm install && cd ../client && npm install && cd ../admin && npm install",
+    "setup": "cp server/.env.example server/.env && cp client/.env.example client/.env && cp admin/.env.example admin/.env",
+    "start:server": "cd server && npm start",
+    "start:client": "cd client && npm start",
+    "start:admin": "cd admin && npm start"
+  },
+  "description": "Zoop - Real-time Fast Food Ordering App"
+}
