@@ -43,7 +43,7 @@ app.use('/api/stats', statsRoutes);
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 
 // MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/zoop')
+mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
     console.log('✅ MongoDB connected');
     await seedAdmin();
