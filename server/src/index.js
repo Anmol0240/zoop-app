@@ -13,37 +13,25 @@ const statsRoutes = require('./routes/stats');
 const app = express();
 const server = http.createServer(app);
 
-// Init socket
 initSocket(server);
 
-// Middleware
-app.use(cors({
-  origin: [
-    process.env.CLIENT_URL || 'http://localhost:3000',
-    process.env.ADMIN_URL || 'http://localhost:3001',
-    // Replit support
-    /\.replit\.dev$/,
-    /\.repl\.co$/
-  ],
-  credentials: true
-}));
+// Allow all origins
+app.use(cors({ origin: '*', credentials: false }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// Static uploads
 app.use('/uploads', express.static('uploads'));
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/stats', statsRoutes);
 
-// Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 
-// MongoDB
-mongoose.connect(process.env.MONGO_URI)
+// Support both MONGO_URI and MONGODB_URI
+const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/zoop';
+
+mongoose.connect(mongoUri)
   .then(async () => {
     console.log('✅ MongoDB connected');
     await seedAdmin();
@@ -51,7 +39,6 @@ mongoose.connect(process.env.MONGO_URI)
   })
   .catch(err => console.error('❌ MongoDB error:', err));
 
-// Seed admin
 async function seedAdmin() {
   const Admin = require('./models/Admin');
   const bcrypt = require('bcryptjs');
@@ -63,7 +50,6 @@ async function seedAdmin() {
   }
 }
 
-// Seed sample menu
 async function seedMenu() {
   const MenuItem = require('./models/MenuItem');
   const count = await MenuItem.countDocuments();
